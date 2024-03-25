@@ -1,36 +1,17 @@
-package com.FYP.PandaiPlanner.entity;
+package com.FYP.PandaiPlanner.dto;
 
-import jakarta.persistence.*;
+import com.FYP.PandaiPlanner.entity.User;
 
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "\"budget\"")
-public class Budget {
+public class BudgetDTO {
 
 
-    @ManyToOne
-    @JoinColumn(name = "userId", referencedColumnName = "id") // Assuming the User's ID field is named 'id'
     private User user;
     private String budgetCategory;
     private int budgetLimit;
     private LocalDate budgetDate;
     private double budgetSpent;
-
-
-
-    @Id
-    @SequenceGenerator(
-            name = "user_sequence",
-            sequenceName = "user_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "user_sequence"
-    )
-    private Long budgetId;
-
 
     public User getUser() {
         return user;
@@ -39,21 +20,6 @@ public class Budget {
     public void setUser(User user) {
         this.user = user;
     }
-
-
-    public Long getBudgetId() {
-        return budgetId;
-    }
-    public void setBudgetId(Long budgetId) {
-        this.budgetId = budgetId;
-    }
-    public Long getUserId() {
-        return user.getId();
-    }
-    public void setUserId(Long userId) {
-        this.user.setId(userId);
-    }
-
     public String getBudgetCategory() {
         return budgetCategory;
     }
