@@ -6,7 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.FYP.PandaiPlanner.service.UserService;
+
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/v1/users")
@@ -33,18 +37,23 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> validateLogin(@RequestBody User user) {
         try {
-            if (userService.validateUser(user)) {
+            Optional<Long> userId = userService.validateUserAndGetId(user);
+            if (userId.isPresent()) {
                 // Login successful
-                return ResponseEntity.ok().body("Login successful");
+                Map<String, Long> userIdMap = Collections.singletonMap("userId", userId.get());
+                return ResponseEntity.ok().body(userIdMap);
             } else {
-                // This part is redundant since validateUser throws an exception if validation fails
+                // User not found or password does not match
                 return new ResponseEntity<>("Invalid login details", HttpStatus.UNAUTHORIZED);
             }
         } catch (IllegalStateException e) {
             // If validation fails, catch the exception and return an appropriate response
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
+
+
     }
+
 
     @GetMapping
     public List<User> getUsers() {

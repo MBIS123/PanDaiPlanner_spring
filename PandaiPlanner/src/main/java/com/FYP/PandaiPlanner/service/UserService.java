@@ -45,13 +45,20 @@ public class UserService {
 
     public boolean validateUser(User user) {
         User userFound = userRepository.findByEmail(user.getEmail())
-                .orElseThrow(() -> new IllegalStateException("User does not exist"));
+                .orElseThrow(() -> new IllegalStateException("User does not existsss"));
 
         if( !user.getPassword().equals(userFound.getPassword())){
             throw new IllegalStateException("Password incorrect");
         }
         return true;
     }
+
+    public Optional<Long> validateUserAndGetId(User loginUser) {
+        return userRepository.findByEmail(loginUser.getEmail())
+                .filter(user -> user.getPassword().equals(loginUser.getPassword())) // Direct password comparison
+                .map(User::getId); // Extract and return the user ID
+    }
+
 
 
 

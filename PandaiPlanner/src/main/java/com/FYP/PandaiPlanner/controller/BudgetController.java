@@ -1,5 +1,5 @@
 package com.FYP.PandaiPlanner.controller;
-
+import com.FYP.PandaiPlanner.dto.BudgetDTO;
 import com.FYP.PandaiPlanner.dto.UserDTO;
 import com.FYP.PandaiPlanner.entity.User;
 import com.FYP.PandaiPlanner.service.BudgetService;
@@ -19,24 +19,17 @@ public class BudgetController {
     private final BudgetService budgetService;
 
     @Autowired
-    public BudgetController(BudgetService userService) {
-        this.budgetService = userService;
+    public BudgetController(BudgetService budgetService) {
+        this.budgetService = budgetService;
     }
 
-
-    @PostMapping("/register")
-    public ResponseEntity<User> createNewUser(@RequestBody UserDTO userDTO) {
-        // Perform validation on email and password here
-        //String encodedPassword = passwordEncoder.encode(user.getPassword());
-        User newUser = new User();
-        newUser.setEmail(userDTO.getEmail());
-        newUser.setPassword(userDTO.getPassword());
-        newUser.setFirstName(userDTO.getFirstName());
-        newUser.setLastName(userDTO.getLastName());
-        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+    @PostMapping("/createBudget")
+    public ResponseEntity<?> createOrUpdateBudget(@RequestBody BudgetDTO budgetDTO) {
+        try {
+            budgetService.createBudget(budgetDTO);
+            return ResponseEntity.ok().body("Budget successfully updated.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error updating budget: " + e.getMessage());
+        }
     }
-
-
-
-
 }

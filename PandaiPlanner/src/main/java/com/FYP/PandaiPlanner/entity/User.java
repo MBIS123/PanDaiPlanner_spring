@@ -23,7 +23,6 @@ public class User {
     private String email;
     private Integer age;
     private LocalDate dob;
-
     private String password;
 
     public String getPassword() {
