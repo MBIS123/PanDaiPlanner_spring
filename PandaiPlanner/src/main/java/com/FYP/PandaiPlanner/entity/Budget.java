@@ -7,18 +7,13 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "\"budget\"")
 public class Budget {
-
-
     @ManyToOne
-    @JoinColumn(name = "userId", referencedColumnName = "id") // Assuming the User's ID field is named 'id'
+    @JoinColumn(name = "userId", referencedColumnName = "id")
     private User user;
     private String budgetCategory;
     private int budgetLimit;
     private LocalDate budgetDate;
     private double budgetSpent;
-
-
-
     @Id
     @SequenceGenerator(
             name = "user_sequence",
@@ -30,17 +25,12 @@ public class Budget {
             generator = "user_sequence"
     )
     private Long budgetId;
-
-
     public User getUser() {
         return user;
     }
-
     public void setUser(User user) {
         this.user = user;
     }
-
-
     public Long getBudgetId() {
         return budgetId;
     }

@@ -22,4 +22,21 @@ public interface BudgetRepository extends JpaRepository<Budget, Long> {
     // If you want to find budgets by user ID and date without category
     @Query("SELECT b FROM Budget b WHERE b.user.id = :userId AND b.budgetDate = :budgetDate")
     List<Budget> findByUserIdAndBudgetDate(@Param("userId") Long userId, @Param("budgetDate") LocalDate budgetDate);
+
+    @Query("SELECT b FROM Budget b WHERE b.user.id = :userId AND b.budgetCategory = :budgetCategory AND EXTRACT(YEAR FROM CAST(b.budgetDate AS date)) = EXTRACT(YEAR FROM CAST(:date AS date)) AND EXTRACT(MONTH FROM CAST(b.budgetDate AS date)) = EXTRACT(MONTH FROM CAST(:date AS date))")
+    Optional<Budget> findExistingBudgetByCategoryAndDate(Long userId, String budgetCategory, LocalDate date);
+
+    @Query("SELECT b FROM Budget b WHERE b.user.id = :userId " +
+            "AND FUNCTION('YEAR', b.budgetDate) = FUNCTION('YEAR', CURRENT_DATE) " +
+            "AND FUNCTION('MONTH', b.budgetDate) = FUNCTION('MONTH', CURRENT_DATE)")
+    List<Budget> findAllByUserIdAndCurrentMonth(Long userId);
+
+    @Query("SELECT b FROM Budget b WHERE b.user.id = :userId ")
+    List<Budget> findAllByUserId(Long userId);
+
+    // In your BudgetRepository.java
+
+    @Query("SELECT b FROM Budget b WHERE b.user.id = :userId AND EXTRACT(YEAR FROM CAST(b.budgetDate AS date)) = EXTRACT(YEAR FROM CAST(:date AS date)) AND EXTRACT(MONTH FROM CAST(b.budgetDate AS date)) = EXTRACT(MONTH FROM CAST(:date AS date))")
+    List<Budget> findExistingBudgetByUserIDAndDate(Long userId, LocalDate date);
+
 }

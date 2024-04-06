@@ -7,18 +7,18 @@ import java.time.LocalDate;
 public class BudgetDTO {
 
 
-    private User user;
+    private long userId; // Assuming the user ID is a long. Use int if it's an integer
     private String budgetCategory;
     private int budgetLimit;
     private LocalDate budgetDate;
     private double budgetSpent;
 
-    public User getUser() {
-        return user;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
     public String getBudgetCategory() {
         return budgetCategory;
