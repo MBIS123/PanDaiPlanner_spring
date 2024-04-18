@@ -32,11 +32,13 @@ public class TransactionService {
         Transaction transaction = new Transaction();
         transaction.setUser(user);
         transaction.setBudgetCategory(transactionDTO.getBudgetCategory());
-        transaction.setNote(transactionDTO.getNote());
         transaction.setTransactionDate(transactionDTO.getTransactionDate()); // Assuming the date is a String and needs to be parsed
+        transaction.setTransactionAmount(transactionDTO.getTransactionAmount());
         transactionRepository.save(transaction);
-
     }
+
+
+
 
 
 }

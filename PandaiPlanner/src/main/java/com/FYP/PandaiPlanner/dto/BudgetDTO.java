@@ -9,7 +9,7 @@ public class BudgetDTO {
 
     private long userId; // Assuming the user ID is a long. Use int if it's an integer
     private String budgetCategory;
-    private int budgetLimit;
+    private double budgetLimit;
     private LocalDate budgetDate;
     private double budgetSpent;
 
@@ -28,7 +28,7 @@ public class BudgetDTO {
         this.budgetCategory = budgetCategory;
     }
 
-    public int getBudgetLimit() {
+    public double getBudgetLimit() {
         return budgetLimit;
     }
 

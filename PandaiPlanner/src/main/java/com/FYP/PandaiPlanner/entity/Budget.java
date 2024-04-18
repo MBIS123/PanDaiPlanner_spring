@@ -11,7 +11,7 @@ public class Budget {
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private User user;
     private String budgetCategory;
-    private int budgetLimit;
+    private double budgetLimit;
     private LocalDate budgetDate;
     private double budgetSpent;
     @Id
@@ -52,11 +52,11 @@ public class Budget {
         this.budgetCategory = budgetCategory;
     }
 
-    public int getBudgetLimit() {
+    public double getBudgetLimit() {
         return budgetLimit;
     }
 
-    public void setBudgetLimit(int budgetLimit) {
+    public void setBudgetLimit(double budgetLimit) {
         this.budgetLimit = budgetLimit;
     }
 

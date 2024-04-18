@@ -53,8 +53,10 @@ public class BudgetService {
         if (existingBudget.isPresent()) {
             // If the budget exists for the current month and category, update it
             budget = existingBudget.get();
-            budget.setBudgetLimit(budgetDTO.getBudgetLimit());  // Assuming you want to update the budget limit
-            budget.setBudgetSpent(budgetDTO.getBudgetSpent());  // And any other fields you want to update
+            budget.setBudgetLimit(budgetDTO.getBudgetLimit());
+            System.out.println("the budgetlimit is:"+ budget.getBudgetLimit() );
+// Assuming you want to update the budget limit
+            budget.setBudgetSpent(budget.getBudgetSpent());  // And any other fields you want to update
         } else {
             // If not, create a new budget
             budget = new Budget();
@@ -69,19 +71,32 @@ public class BudgetService {
         budgetRepository.save(budget);
     }
 
+    public void recordBudgetSpent(BudgetDTO budgetDTO) {
+        // Retrieve the existing budget based on userId, budgetCategory, and budgetDate
+        Optional<Budget> existingBudgetOpt = budgetRepository.findExistingBudgetByCategoryAndDate(
+                budgetDTO.getUserId(),
+                budgetDTO.getBudgetCategory(),
+                budgetDTO.getBudgetDate()
+        );
+
+        if (existingBudgetOpt.isPresent()) {
+            Budget existingBudget = existingBudgetOpt.get();
+
+            double newBudgetSpent = existingBudget.getBudgetSpent() + budgetDTO.getBudgetSpent();
+
+            existingBudget.setBudgetSpent(newBudgetSpent);
+
+            budgetRepository.save(existingBudget);
+        } else {
+            // handle the case where no existing budget was found.
+        }
+    }
+
     public List<Budget> findCurrentMonthBudgets(Long userId) {
         LocalDate currentDate = LocalDate.now(); // Use java.util.Date (or use java.time.LocalDate with appropriate conversions)
         System.out.println("the user id is:"+ userId + "the data is:" + currentDate);
 
         return budgetRepository.findExistingBudgetByUserIDAndDate(userId, currentDate);
     }
-
-
-
-
-
-
-
-
 
 }

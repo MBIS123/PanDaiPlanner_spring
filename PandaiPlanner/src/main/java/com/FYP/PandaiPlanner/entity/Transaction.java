@@ -23,6 +23,13 @@ public class Transaction {
     private String budgetCategory;
     private String note;
     private LocalDate transactionDate;
+
+    private double transactionAmount;
+
+    @ManyToOne
+    @JoinColumn(name = "userId", referencedColumnName = "id")
+    private User user;
+
     public User getUser() {
         return user;
     }
@@ -30,9 +37,15 @@ public class Transaction {
         this.user = user;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "userId", referencedColumnName = "id")
-    private User user;
+
+
+    public double getTransactionAmount() {
+        return transactionAmount;
+    }
+
+    public void setTransactionAmount(double transactionAmount) {
+        this.transactionAmount = transactionAmount;
+    }
 
     public Long getTransactionId() {
         return transactionId;

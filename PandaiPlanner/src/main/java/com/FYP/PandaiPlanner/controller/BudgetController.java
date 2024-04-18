@@ -35,6 +35,16 @@ public class BudgetController {
         }
     }
 
+    @PostMapping("/recordBudgetSpent")
+    public ResponseEntity<?> recordBudgetSpent(@RequestBody BudgetDTO budgetDTO) {
+        try {
+            budgetService.recordBudgetSpent(budgetDTO);
+            return ResponseEntity.ok().body("Budget spent updated.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error updating budget: " + e.getMessage());
+        }
+    }
+
 //    @GetMapping("/limit")
 //    public ResponseEntity<?> getBudgetLimit(@RequestParam Long userId, @RequestParam String budgetCategory) {
 //        try {
@@ -51,7 +61,6 @@ public class BudgetController {
 //    }
 
     @GetMapping("/budgetCurrentMonth")
-
     public ResponseEntity<?> getBudgetsForCurrentMonth(@RequestParam Long userId ) {
         try {
             List<Budget> budgets = budgetService.findCurrentMonthBudgets(userId);
