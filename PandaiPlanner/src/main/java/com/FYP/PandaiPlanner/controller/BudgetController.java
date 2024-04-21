@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -45,6 +46,9 @@ public class BudgetController {
         }
     }
 
+
+
+
 //    @GetMapping("/limit")
 //    public ResponseEntity<?> getBudgetLimit(@RequestParam Long userId, @RequestParam String budgetCategory) {
 //        try {
@@ -61,13 +65,26 @@ public class BudgetController {
 //    }
 
     @GetMapping("/budgetCurrentMonth")
-    public ResponseEntity<?> getBudgetsForCurrentMonth(@RequestParam Long userId ) {
+    public ResponseEntity<?> getBudgetsForCurrentMonth(
+            @RequestParam Long userId,
+            @RequestParam(required = false) Integer year,
+            @RequestParam(required = false) Integer month
+    ) {
         try {
-            List<Budget> budgets = budgetService.findCurrentMonthBudgets(userId);
+            // If year and month are not provided, default to current year and month
+            if (year == null || month == null) {
+                YearMonth currentYearMonth = YearMonth.now();
+                year = currentYearMonth.getYear();
+                month = currentYearMonth.getMonthValue();
+            }
+
+            List<Budget> budgets = budgetService.findBudgetsForMonth(userId, year, month);
             return ResponseEntity.ok(budgets);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while retrieving the budgets");
         }
+
+
     }
 
 

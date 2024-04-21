@@ -99,4 +99,12 @@ public class BudgetService {
         return budgetRepository.findExistingBudgetByUserIDAndDate(userId, currentDate);
     }
 
+    public List<Budget> findBudgetsForMonth(Long userId, int year, int month) {
+        // Convert year and month to a LocalDate object
+        LocalDate currentDate = LocalDate.of(year, month, 1); // Set day to 1 for the first day of the month
+        System.out.println("the user id is:" + userId + " the date is:" + currentDate);
+
+        return budgetRepository.findExistingBudgetByUserIDAndDate(userId, currentDate);
+    }
+
 }
