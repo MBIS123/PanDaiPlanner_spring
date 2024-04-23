@@ -3,6 +3,7 @@ package com.FYP.PandaiPlanner.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "\"transaction\"")
@@ -23,6 +24,16 @@ public class Transaction {
     private String budgetCategory;
     private String note;
     private LocalDate transactionDate;
+
+    public LocalTime getTransactionTime() {
+        return transactionTime;
+    }
+
+    public void setTransactionTime(LocalTime transactionTime) {
+        this.transactionTime = transactionTime;
+    }
+
+    private LocalTime transactionTime;
 
     private double transactionAmount;
 

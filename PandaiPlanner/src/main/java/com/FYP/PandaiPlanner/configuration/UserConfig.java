@@ -16,7 +16,6 @@ public class UserConfig {
     CommandLineRunner commandLineRunner(UserRepository repository) {
         return args -> {
 
-
         };
     }
 }

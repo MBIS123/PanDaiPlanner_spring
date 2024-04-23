@@ -59,7 +59,6 @@ public class User {
         this.id = id;
     }
 
-
     public String getEmail() {
         return email;
     }
@@ -93,7 +92,6 @@ public class User {
         this.dob = dob;
         this.password = password;
     }
-
     public User(String name, String lastName, String email, Integer age, LocalDate dob , String password) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -101,11 +99,8 @@ public class User {
         this.age = age;
         this.dob = dob;
         this.password = password;
-
     }
-
     // Getters and setters...
-
     @Override
     public String toString() {
         return "User{" +
@@ -116,4 +111,6 @@ public class User {
                 ", dob=" + dob +
                 '}';
     }
+
+
 }

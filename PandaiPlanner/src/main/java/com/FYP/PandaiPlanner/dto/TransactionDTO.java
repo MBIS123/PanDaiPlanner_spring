@@ -1,6 +1,7 @@
 package com.FYP.PandaiPlanner.dto;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class TransactionDTO {
 
@@ -8,6 +9,17 @@ public class TransactionDTO {
     private String budgetCategory;
     private String note;
     private LocalDate transactionDate;
+
+    public LocalTime getTransactionTime() {
+        return transactionTime;
+    }
+
+    public void setTransactionTime(LocalTime transactionTime) {
+        this.transactionTime = transactionTime;
+    }
+
+    private LocalTime transactionTime;
+
 
     public double getTransactionAmount() {
         return transactionAmount;
