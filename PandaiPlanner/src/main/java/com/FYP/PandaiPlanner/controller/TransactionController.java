@@ -70,14 +70,18 @@ public class TransactionController {
                 month = currentYearMonth.getMonthValue();
             }
 
-            List<Transaction> transaction = transactionService.getTransactionByDateAndId(userId, year, month);
-            return ResponseEntity.ok(transaction);
+            List<Transaction> transactions = transactionService.getTransactionByDateAndId(userId, year, month);
+            return ResponseEntity.ok(transactions);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while retrieving the budgets");
+            // Log the error for debugging purposes
+            e.printStackTrace();
+
+            // Return a more specific error message
+            String errorMessage = "An error occurred while retrieving the transaction: " + e.getMessage();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
         }
-
-
     }
+
 
 
 

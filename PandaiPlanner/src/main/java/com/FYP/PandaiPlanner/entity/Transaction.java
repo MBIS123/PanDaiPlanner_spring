@@ -1,7 +1,6 @@
 package com.FYP.PandaiPlanner.entity;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -9,21 +8,34 @@ import java.time.LocalTime;
 @Table(name = "\"transaction\"")
 public class Transaction {
 
-
     @Id
     @SequenceGenerator(
             name = "user_sequence",
             sequenceName = "user_sequence",
             allocationSize = 1
     )
+
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
             generator = "user_sequence"
     )
+
     private Long transactionId;
     private String budgetCategory;
     private String note;
     private LocalDate transactionDate;
+    private LocalTime transactionTime;
+    private double transactionAmount;
+
+    @ManyToOne
+    @JoinColumn(name = "userId", referencedColumnName = "id")
+    private User user;
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public LocalTime getTransactionTime() {
         return transactionTime;
@@ -32,22 +44,6 @@ public class Transaction {
     public void setTransactionTime(LocalTime transactionTime) {
         this.transactionTime = transactionTime;
     }
-
-    private LocalTime transactionTime;
-
-    private double transactionAmount;
-
-    @ManyToOne
-    @JoinColumn(name = "userId", referencedColumnName = "id")
-    private User user;
-
-    public User getUser() {
-        return user;
-    }
-    public void setUser(User user) {
-        this.user = user;
-    }
-
 
 
     public double getTransactionAmount() {

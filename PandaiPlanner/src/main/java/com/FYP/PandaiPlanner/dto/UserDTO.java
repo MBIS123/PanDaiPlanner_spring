@@ -1,27 +1,28 @@
 package com.FYP.PandaiPlanner.dto;
 
 public class UserDTO {
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    private Long id;
+
     private String email;
     private String password;
 
-    private String firstName;
+    private String name;
 
-    private String lastName;
-
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setName(String name) {
+        this.name = name;
     }
 
 
@@ -30,11 +31,10 @@ public class UserDTO {
         // Default constructor
     }
 
-    public UserDTO(String email, String password , String firstName , String lastName) {
+    public UserDTO(String email, String password , String name) {
         this.email = email;
         this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.name = name;
     }
 
     public String getEmail() {

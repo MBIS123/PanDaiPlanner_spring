@@ -21,13 +21,6 @@ public class Budget {
 
     @Column(name = "budget_spent")
     private double budgetSpent;
-
-    @Column(name = "budget_color")
-    private String budgetColor; // Store color as a string
-
-    @Column(name = "budget_icon")
-    private String budgetIcon; // Store icon as a string (e.g., icon name or URL)
-
     @Id
     @SequenceGenerator(
             name = "budget_sequence",
@@ -81,22 +74,6 @@ public class Budget {
 
     public void setBudgetSpent(double budgetSpent) {
         this.budgetSpent = budgetSpent;
-    }
-
-    public String getBudgetColor() {
-        return budgetColor;
-    }
-
-    public void setBudgetColor(String budgetColor) {
-        this.budgetColor = budgetColor;
-    }
-
-    public String getBudgetIcon() {
-        return budgetIcon;
-    }
-
-    public void setBudgetIcon(String budgetIcon) {
-        this.budgetIcon = budgetIcon;
     }
 
     public Long getBudgetId() {

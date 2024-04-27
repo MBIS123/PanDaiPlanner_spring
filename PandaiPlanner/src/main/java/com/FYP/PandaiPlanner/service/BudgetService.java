@@ -2,8 +2,10 @@ package com.FYP.PandaiPlanner.service;
 
 import com.FYP.PandaiPlanner.dto.BudgetDTO;
 import com.FYP.PandaiPlanner.entity.Budget;
+import com.FYP.PandaiPlanner.entity.Transaction;
 import com.FYP.PandaiPlanner.entity.User;
 import com.FYP.PandaiPlanner.repository.BudgetRepository;
+import com.FYP.PandaiPlanner.repository.TransactionRepository;
 import com.FYP.PandaiPlanner.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,10 +20,14 @@ public class BudgetService {
     private final BudgetRepository  budgetRepository;
     private final UserRepository  userRepository;
 
+    private final TransactionRepository transactionRepository;
+
+
     @Autowired
-    public BudgetService(BudgetRepository budgetRepository, UserRepository userRepository) {
+    public BudgetService(BudgetRepository budgetRepository, UserRepository userRepository, TransactionRepository transactionRepository) {
         this.budgetRepository = budgetRepository;
         this.userRepository = userRepository;
+        this.transactionRepository = transactionRepository;
     }
 //    public void createBudget(BudgetDTO budgetDTO) {
 //        Budget budget = new Budget();
@@ -51,22 +57,25 @@ public class BudgetService {
 
         Budget budget;
         if (existingBudget.isPresent()) {
-            // If the budget exists for the current month and category, update it
             budget = existingBudget.get();
             budget.setBudgetLimit(budgetDTO.getBudgetLimit());
-            System.out.println("the budgetlimit is:"+ budget.getBudgetLimit() );
-// Assuming you want to update the budget limit
-            budget.setBudgetSpent(budget.getBudgetSpent());  // And any other fields you want to update
+            System.out.println("the budget limit is: " + budget.getBudgetLimit());
         } else {
-            // If not, create a new budget
             budget = new Budget();
             budget.setUser(user);
             budget.setBudgetCategory(budgetDTO.getBudgetCategory());
             budget.setBudgetLimit(budgetDTO.getBudgetLimit());
             budget.setBudgetDate(budgetDTO.getBudgetDate());
-            budget.setBudgetSpent(budgetDTO.getBudgetSpent());
         }
-
+        List<Transaction> existingTransactions = transactionRepository.findTransactionByUserIDDateAndBudgetCategory(
+                user.getId(),
+                budgetDTO.getBudgetDate(),
+                budgetDTO.getBudgetCategory()
+        );
+        double totalTransactionAmount = existingTransactions.stream()
+                .mapToDouble(Transaction::getTransactionAmount)
+                .sum();
+        budget.setBudgetSpent(totalTransactionAmount);
         // Save the budget entity to the database
         budgetRepository.save(budget);
     }
@@ -89,6 +98,8 @@ public class BudgetService {
             budgetRepository.save(existingBudget);
         } else {
             // handle the case where no existing budget was found.
+
+
         }
     }
 

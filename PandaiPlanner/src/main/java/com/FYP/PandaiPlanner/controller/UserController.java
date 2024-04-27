@@ -1,4 +1,5 @@
 package com.FYP.PandaiPlanner.controller;
+import com.FYP.PandaiPlanner.dto.IncomeDTO;
 import com.FYP.PandaiPlanner.dto.UserDTO;
 import com.FYP.PandaiPlanner.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,17 @@ public class UserController {
         User newUser = new User();
         newUser.setEmail(userDTO.getEmail());
         newUser.setPassword(userDTO.getPassword());
-        newUser.setFirstName(userDTO.getFirstName());
-        newUser.setLastName(userDTO.getLastName());
+        newUser.setName(userDTO.getName());
         userService.addNewUser(newUser);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/updateUserName")
+    public ResponseEntity<UserDTO> updateUserName(@RequestBody UserDTO userDTO) {
+        // Perform validation on email and password here
+
+        userService.updateUserName(userDTO);
+        return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
@@ -50,15 +58,22 @@ public class UserController {
             // If validation fails, catch the exception and return an appropriate response
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
-
-
     }
 
 
-    @GetMapping
-    public List<User> getUsers() {
-        return userService.getUsers();
+
+    @GetMapping("/currentUser")
+    public ResponseEntity<User> findUserById( @RequestParam Long userId
+                                                         ) {
+        User user = userService.getUserById(userId);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
+
+
     @PostMapping
     public void addNewUser(@RequestBody User user) {
         userService.addNewUser(user);
@@ -71,4 +86,8 @@ public class UserController {
     public void updateUser(@RequestBody User user) {
         userService.updateUser(user);
     }
+
+
+
+
 }

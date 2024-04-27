@@ -6,15 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface BudgetRepository extends JpaRepository<Budget, Long> {
-    // This method is provided by JpaRepository, so you don't need to define it yourself unless you're changing the functionality.
-    // Optional<Budget> findById(Long id); // This line can be removed
 
     @Query("SELECT b FROM Budget b WHERE b.user.id = :userId AND b.budgetCategory = :category AND b.budgetDate = :budgetDate")
     List<Budget> findByUserIdAndCategoryAndBudgetDate(@Param("userId") Long userId, @Param("category") String category, @Param("budgetDate") LocalDate budgetDate);
@@ -33,8 +30,6 @@ public interface BudgetRepository extends JpaRepository<Budget, Long> {
 
     @Query("SELECT b FROM Budget b WHERE b.user.id = :userId ")
     List<Budget> findAllByUserId(Long userId);
-
-    // In your BudgetRepository.java
 
     @Query("SELECT b FROM Budget b WHERE b.user.id = :userId AND EXTRACT(YEAR FROM CAST(b.budgetDate AS date)) = EXTRACT(YEAR FROM CAST(:date AS date)) AND EXTRACT(MONTH FROM CAST(b.budgetDate AS date)) = EXTRACT(MONTH FROM CAST(:date AS date))")
     List<Budget> findExistingBudgetByUserIDAndDate(Long userId, LocalDate date);

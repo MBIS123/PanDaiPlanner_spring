@@ -1,6 +1,7 @@
 package com.FYP.PandaiPlanner.service;
 
 
+import com.FYP.PandaiPlanner.dto.UserDTO;
 import com.FYP.PandaiPlanner.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,26 @@ public class UserService {
         user.setPassword(user.getPassword());
         userRepository.save(user);
     }
+    public User getUserById(Long userID){
+        User userFound = userRepository.findUserById(userID)
+                .orElseThrow(() -> new IllegalStateException("User does not existsss"));
+        return  userFound;
+    }
+
+    @Transactional
+    public void updateUserName(UserDTO userDTO) {
+        Long userId = userDTO.getId();
+        String newName = userDTO.getName();
+
+        Optional<User> existingUser = userRepository.findById(userId);
+        if (existingUser.isPresent()) {
+            User user = existingUser.get();
+            user.setName(newName);
+            userRepository.save(user);
+        } else {
+            throw new IllegalStateException("User with ID " + userId + " not found");
+        }
+    }
 
     public void deleteUser(Long userId) {
         boolean exists = userRepository.existsById(userId);
@@ -42,6 +63,8 @@ public class UserService {
         }
         userRepository.deleteById(userId);
     }
+
+
 
     public boolean validateUser(User user) {
         User userFound = userRepository.findByEmail(user.getEmail())
@@ -58,6 +81,7 @@ public class UserService {
                 .filter(user -> user.getPassword().equals(loginUser.getPassword())) // Direct password comparison
                 .map(User::getId); // Extract and return the user ID
     }
+
 
 
 
