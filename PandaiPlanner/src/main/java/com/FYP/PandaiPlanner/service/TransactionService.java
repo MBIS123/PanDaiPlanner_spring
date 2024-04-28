@@ -61,15 +61,14 @@ public class TransactionService {
             budget.setBudgetSpent(budgetSpent - existingTransactionAmount + transactionDTO.getTransactionAmount());
             budgetRepository.save(budget);
 
-            existingTransaction.setNote(transactionDTO.getNote());
-            existingTransaction.setBudgetCategory(transactionDTO.getBudgetCategory());
-            existingTransaction.setTransactionDate(transactionDTO.getTransactionDate());
-            existingTransaction.setTransactionAmount(transactionDTO.getTransactionAmount());
-            existingTransaction.setTransactionTime(transactionDTO.getTransactionTime());
-            transactionRepository.save(existingTransaction);
-        } else {
-            throw new NoSuchElementException("Budget not found for category: " + existingTransaction.getBudgetCategory() + " and date: " + yearMonth);
+
         }
+        existingTransaction.setNote(transactionDTO.getNote());
+        existingTransaction.setBudgetCategory(transactionDTO.getBudgetCategory());
+        existingTransaction.setTransactionDate(transactionDTO.getTransactionDate());
+        existingTransaction.setTransactionAmount(transactionDTO.getTransactionAmount());
+        existingTransaction.setTransactionTime(transactionDTO.getTransactionTime());
+        transactionRepository.save(existingTransaction);
     }
 
 
@@ -85,8 +84,6 @@ public class TransactionService {
             double budgetSpent = budget.getBudgetSpent();
             budget.setBudgetSpent(budgetSpent - transactionAmount);
             budgetRepository.save(budget);
-        } else {
-            throw new NoSuchElementException("Budget not found for category: " + transaction.getBudgetCategory() + " and date: " + yearMonth);
         }
         transactionRepository.delete(transaction);
     }

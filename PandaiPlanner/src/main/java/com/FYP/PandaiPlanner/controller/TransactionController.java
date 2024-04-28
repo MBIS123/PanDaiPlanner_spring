@@ -57,7 +57,7 @@ public class TransactionController {
     }
 
     @GetMapping("/getTransactionInfo")
-    public ResponseEntity<?> getBudgetsForCurrentMonth(
+    public ResponseEntity<?> getTransactionForCurrentMonth(
             @RequestParam Long userId,
             @RequestParam(required = false) Integer year,
             @RequestParam(required = false) Integer month
@@ -76,6 +76,32 @@ public class TransactionController {
             // Log the error for debugging purposes
             e.printStackTrace();
 
+            // Return a more specific error message
+            String errorMessage = "An error occurred while retrieving the transaction: " + e.getMessage();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        }
+    }
+
+
+    @GetMapping("/getTransactionInfoByCategory")
+    public ResponseEntity<?> getTransactionByCategoryCurrentMonth(
+            @RequestParam Long userId
+
+    ) {
+        try {
+
+            Integer year ;
+            Integer month;
+                YearMonth currentYearMonth = YearMonth.now();
+                year = currentYearMonth.getYear();
+                month = currentYearMonth.getMonthValue();
+
+
+            List<Transaction> transactions = transactionService.getTransactionSummaryByDateAndIdOrderByBudgetCategory(userId, year, month);
+            return ResponseEntity.ok(transactions);
+        } catch (Exception e) {
+            // Log the error for debugging purposes
+            e.printStackTrace();
             // Return a more specific error message
             String errorMessage = "An error occurred while retrieving the transaction: " + e.getMessage();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
